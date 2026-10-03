@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // This Worker is separate from any other project on the Cloudflare account.
+  // Change the name if "dms" is already taken in your account.
+  "name": "dms",
+  "main": "worker.ts",
+  "compatibility_date": "2026-09-15",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "services": [
+    {
+      // Self-reference used by OpenNext; must match "name" above.
+      "binding": "WORKER_SELF_REFERENCE",
+      "service": "dms"
+    }
+  ],
+  // Free Cron Trigger: once a day at 03:00 UTC (11:00 AM in the Philippines) the
+  // Worker makes a tiny Supabase read so the free project never pauses.
+  "triggers": {
+    "crons": ["0 3 * * *"]
+  },
+  "observability": {
+    "enabled": true
+  }
+  // Secrets (Supabase + R2 keys) are NOT stored here. Upload them with:
+  //   npx wrangler secret bulk .dev.vars
+}

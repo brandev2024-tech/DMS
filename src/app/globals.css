@@ -1,26 +1,235 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   DMS — modern minimal with a feminine trace.
+   Warm white + near-black ink, hairline borders, one dusty-rose accent.
+   --------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --bg: #fcfaf8; /* warm white */
+  --surface: #ffffff;
+  --blush: #f7eeef; /* barely-there pink tint for image wells & hovers */
+  --rose: #d8a7b1; /* brand dusty rose */
+  --rose-ink: #a3596b; /* accent for text — AA on white */
+  --gold: #c9a96e;
+  --gold-ink: #8a6a2e;
+  --ink: #1d1a1a;
+  --muted: #6f6868;
+  --line: #ebe5e2;
+  --on-ink: #fcfaf8;
+  --shadow: 0 24px 48px -28px rgb(29 26 26 / 0.22);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: #131011;
+    --surface: #1b1718;
+    --blush: #251e20;
+    --rose: #c494a0;
+    --rose-ink: #e8b1bf;
+    --gold: #d6b97f;
+    --gold-ink: #e2c68f;
+    --ink: #f4efed;
+    --muted: #a69c9c;
+    --line: #2d2628;
+    --on-ink: #131011;
+    --shadow: 0 24px 48px -28px rgb(0 0 0 / 0.7);
   }
 }
 
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-blush: var(--blush);
+  --color-rose: var(--rose);
+  --color-rose-ink: var(--rose-ink);
+  --color-gold: var(--gold);
+  --color-gold-ink: var(--gold-ink);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-on-ink: var(--on-ink);
+  --font-serif: var(--font-display), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-body), "Jost", system-ui, sans-serif;
+  --shadow-soft: var(--shadow);
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  overflow-x: hidden;
+}
+
+/* Display serif: light, slightly tight. Italic words carry the rose accent. */
+h1,
+h2,
+.font-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+h3 {
+  font-weight: 500;
+}
+h1 em,
+h2 em,
+.accent {
+  font-style: italic;
+  color: var(--rose-ink);
+}
+
+::selection {
+  background: var(--rose);
+  color: #1d1a1a;
+}
+
+:focus-visible {
+  outline: 1.5px solid var(--rose-ink);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
+}
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-full px-6 text-[0.72rem] font-medium uppercase tracking-[0.16em]
+    transition-colors duration-300 disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-ink text-on-ink hover:bg-rose-ink;
+}
+@utility btn-rose {
+  @apply btn bg-blush text-rose-ink hover:bg-rose hover:text-[#1d1a1a];
+}
+@utility btn-outline {
+  @apply btn border border-ink/80 text-ink hover:bg-ink hover:text-on-ink;
+}
+@utility btn-ghost {
+  @apply btn text-ink hover:bg-blush;
+}
+@utility link-underline {
+  @apply bg-[linear-gradient(currentColor,currentColor)] bg-[length:100%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size]
+    duration-300 hover:bg-[length:0%_1px] hover:bg-right-bottom;
+}
+@utility card {
+  @apply rounded-2xl border border-line bg-surface;
+}
+@utility input {
+  @apply min-h-11 w-full rounded-xl border border-line bg-surface px-4 py-2 text-sm text-ink transition-colors
+    placeholder:text-muted/70 focus:border-ink focus:outline-none;
+}
+@utility label {
+  @apply mb-2 block text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted;
+}
+@utility chip {
+  @apply inline-flex min-h-9 items-center rounded-full border border-line px-4 text-[0.8rem] transition-colors
+    hover:border-ink aria-pressed:border-ink aria-pressed:bg-ink aria-pressed:text-on-ink;
+}
+@utility eyebrow {
+  @apply text-[0.68rem] font-medium uppercase tracking-[0.28em] text-rose-ink;
+}
+
+/* Soft blush wash — the only "texture" left in the design. */
+.fur-bg {
+  background:
+    radial-gradient(70% 60% at 85% 10%, color-mix(in srgb, var(--rose) 18%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--blush), var(--bg));
+}
+
+/* Minimal monochrome map tiles so the rose pins stand out. */
+.dms-map .leaflet-tile-pane {
+  filter: grayscale(1) sepia(0.12) contrast(0.92) brightness(1.04);
+}
+@media (prefers-color-scheme: dark) {
+  .dms-map .leaflet-tile-pane {
+    filter: grayscale(1) invert(0.92) contrast(0.85);
+  }
+}
+.dms-map .leaflet-popup-content-wrapper {
+  border-radius: 12px;
+  font-family: var(--font-sans);
+}
+.dms-map .leaflet-control-zoom a {
+  color: #1d1a1a;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out both;
+}
+.animate-slide-up {
+  animation: slide-up 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--blush);
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.45), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

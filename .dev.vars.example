@@ -1,0 +1,33 @@
+# DMS settings — copy to `.dev.vars` and fill in.
+#   • `npm run dev` / `npm run build` read this file (see next.config.ts)
+#   • `npm run secrets` uploads it to the Worker as encrypted secrets
+# Never commit `.dev.vars`. Values containing secrets are only used on the server.
+
+# --- Supabase (Project Settings → API) ---------------------------------------
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-public-key
+# Server only. Used to send push notifications. NEVER expose to the browser.
+SUPABASE_SERVICE_ROLE_KEY=
+
+# --- Site ---------------------------------------------------------------------
+# Public address of the site, no trailing slash (product links in DMs, Open Graph
+# images for Messenger previews, sitemap). e.g. https://dms.your-subdomain.workers.dev
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# --- Cloudflare R2 (bucket "dms-images") --------------------------------------
+# Account ID: Cloudflare dashboard → R2 → (right side) Account Details
+R2_ACCOUNT_ID=
+# R2 → Manage API tokens → Create token → "Object Read & Write", limited to the
+# dms-images bucket only. Server only.
+R2_ACCESS_KEY_ID=
+R2_SECRET_ACCESS_KEY=
+R2_BUCKET=dms-images
+# Bucket → Settings → Public access: the r2.dev URL (or your custom domain), no trailing slash
+NEXT_PUBLIC_R2_PUBLIC_URL=https://pub-xxxxxxxxxxxxxxxx.r2.dev
+
+# --- Web push (optional) --------------------------------------------------------
+# Generate with:  npx @pushforge/builder vapid
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=
+# The private key JWK on ONE line, e.g. {"kty":"EC","crv":"P-256","x":"…","y":"…","d":"…"}
+VAPID_PRIVATE_JWK=
+VAPID_SUBJECT=mailto:you@example.com
