@@ -31,3 +31,10 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=
 # The private key JWK on ONE line, e.g. {"kty":"EC","crv":"P-256","x":"…","y":"…","d":"…"}
 VAPID_PRIVATE_JWK=
 VAPID_SUBJECT=mailto:you@example.com
+
+# --- DMS phone app (optional) ----------------------------------------------------
+# Public values that let shared /product links open the app (universal / App Links).
+# APPLE_TEAM_ID: Apple Developer → Membership details. ANDROID_CERT_SHA256: from
+# `npx eas-cli credentials` (Android → keystore SHA-256), comma-separated if several.
+APPLE_TEAM_ID=
+ANDROID_CERT_SHA256=

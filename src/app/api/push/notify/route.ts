@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { buildPushHTTPRequest } from "@pushforge/builder";
-import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { createRequestClient, createServiceClient } from "@/lib/supabase/server";
 
 /**
  * Sends a web-push to the other side of a conversation after a new message.
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   if (!conversationId) return NextResponse.json({ error: "conversationId required" }, { status: 400 });
 
   // Verify the caller is part of the conversation using their own (RLS-bound) session.
-  const supabase = await createClient();
+  const supabase = await createRequestClient(request);
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   const { data: convo } = await supabase.from("conversations").select("id, shopper_id, last_message").eq("id", conversationId).maybeSingle();

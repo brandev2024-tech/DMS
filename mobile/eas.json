@@ -1,0 +1,36 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "base": {
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "https://eouxbibwdxnzdoaetgsk.supabase.co",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "sb_publishable_y1KWyT84kye__zIpB6IVew_52gC6U7c",
+        "EXPO_PUBLIC_R2_PUBLIC_URL": "https://pub-e7369bc8870c420a8161b05e2531c066.r2.dev",
+        "EXPO_PUBLIC_API_URL": "https://dms.agriscope2026.workers.dev"
+      }
+    },
+    "development": {
+      "extends": "base",
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "extends": "base",
+      "distribution": "internal",
+      "android": { "buildType": "apk" }
+    },
+    "production": {
+      "extends": "base",
+      "autoIncrement": true
+    }
+  },
+  "submit": {
+    "production": {
+      "android": { "track": "internal" },
+      "ios": {}
+    }
+  }
+}

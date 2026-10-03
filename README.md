@@ -137,6 +137,17 @@ Optional: add a custom domain under **Workers & Pages → dms → Settings → D
 
 ---
 
+## 6. Phone app (iOS and Android)
+
+The [`mobile/`](mobile/) folder holds the DMS app (Expo / React Native). It connects to the same Supabase database and R2 photos, so the app and the website always show the same products, chats and settings. Setup, testing on your phone, and publishing to Google Play and the App Store are in [`mobile/README.md`](mobile/README.md). The seller's how-to is [`mobile/SELLER_GUIDE.md`](mobile/SELLER_GUIDE.md).
+
+The app adds only:
+
+- the [`0003_push_tokens.sql`](supabase/migrations/0003_push_tokens.sql) migration
+- two Supabase Edge Functions in [`supabase/functions/`](supabase/functions/), for push notifications and "Delete my account"
+
+The website's upload routes also accept the app's login token (`Authorization: Bearer …`).
+
 ## How it works
 
 ### The DM flow
@@ -166,7 +177,7 @@ The base table is admin-only under RLS.
 |---|---|---|
 | `products` | none (uses `public_products`) | full |
 | `categories`, `product_images`, `shop_settings` | read | full |
-| `favorites`, `push_subscriptions` | own rows | own rows |
+| `favorites`, `push_subscriptions`, `push_tokens` | own rows | own rows |
 | `conversations` | read and create own | read and update all |
 | `messages` | read and send in own threads, as themselves | read and send in all |
 | `dm_clicks` | insert only | read |

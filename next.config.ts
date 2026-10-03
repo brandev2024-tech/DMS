@@ -20,6 +20,13 @@ const nextConfig: NextConfig = {
     // paid image-resizing service (Cloudflare Images) is needed.
     unoptimized: true,
   },
+  // App-link verification files for the DMS phone app (served from env values).
+  async rewrites() {
+    return [
+      { source: "/.well-known/apple-app-site-association", destination: "/api/app-links/apple" },
+      { source: "/.well-known/assetlinks.json", destination: "/api/app-links/android" },
+    ];
+  },
 };
 
 export default nextConfig;

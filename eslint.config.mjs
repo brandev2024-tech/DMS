@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     ".open-next/**",
     ".wrangler/**",
     "cloudflare-env.d.ts",
+    // The phone app and Supabase Edge Functions have their own tooling.
+    "mobile/**",
+    "supabase/functions/**",
   ]),
 ]);
 

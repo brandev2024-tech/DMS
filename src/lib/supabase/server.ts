@@ -27,6 +27,25 @@ export async function createClient() {
 }
 
 /**
+ * For API routes used by both the website and the DMS phone app: the app has no
+ * cookies, so it sends its Supabase access token as "Authorization: Bearer …".
+ * Either way the client acts as that user, so Row Level Security still applies.
+ */
+export async function createRequestClient(request: Request) {
+  const auth = request.headers.get("authorization");
+  const token = auth?.match(/^Bearer\s+(.+)$/i)?.[1];
+  if (!token) return createClient();
+  const client = createPlainClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: { headers: { Authorization: `Bearer ${token}` } },
+  });
+  // getUser() normally reads the stored session; hand it the bearer token instead.
+  const getUser = client.auth.getUser.bind(client.auth);
+  client.auth.getUser = (jwt?: string) => getUser(jwt ?? token);
+  return client;
+}
+
+/**
  * Service-role client that bypasses RLS. Only used server-side for push
  * notifications; returns null when SUPABASE_SERVICE_ROLE_KEY is not set.
  */

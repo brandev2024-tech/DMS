@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isR2Configured, presignPut } from "@/lib/r2";
-import { createClient } from "@/lib/supabase/server";
+import { createRequestClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!(f.size > 0) || f.size > MAX_BYTES) return NextResponse.json({ error: "Image is too large (max 2.5 MB)." }, { status: 413 });
   }
 
-  const supabase = await createClient();
+  const supabase = await createRequestClient(request);
   const { data: auth } = await supabase.auth.getUser();
   if (!auth.user) return NextResponse.json({ error: "Please log in first." }, { status: 401 });
   if (ADMIN_ONLY.includes(kind)) {
